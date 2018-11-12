@@ -2,8 +2,18 @@ package com.yuansong.resource;
 
 public class RdsDbResource extends DbResource {
 	
-	//所在RDS的ID
 	private String rdsId;
+	
+	//所在RDS
+	private RdsResource rdsResource;
+
+	public RdsResource getRdsResource() {
+		return rdsResource;
+	}
+
+	public void setRdsResource(RdsResource rdsResource) {
+		this.rdsResource = rdsResource;
+	}
 
 	public String getRdsId() {
 		return rdsId;

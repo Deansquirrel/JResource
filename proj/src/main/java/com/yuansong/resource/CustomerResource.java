@@ -1,6 +1,57 @@
 package com.yuansong.resource;
 
+import com.yuansong.common.CommonFun;
+import com.yuansong.form.CustomerAddForm;
+
 public class CustomerResource extends BaseResource {
+	
+	public CustomerResource() {
+		super();
+	}
+	
+	public CustomerResource(CustomerAddForm form) {
+		super();
+		this.setId(CommonFun.UUID());
+		this.setName(form.getName());
+		this.setDescription(form.getDescription());
+		this.setCode(form.getCode());
+		this.setShowName(form.getShowname());
+		this.setSimpleName(form.getSimplename());
+		this.setPinyinName(form.getPinyinname());
+		this.setMisType(form.getMistype().toUpperCase());
+		this.setTongdCode(form.getTongdcode());
+	}
+	
+	public String check() {
+		StringBuilder sb = new StringBuilder();
+		if(this.getId() == null || this.getId().equals("")) {
+			sb.append("ID不允许为空；");
+		}
+		if(this.getName() == null || this.getName().equals("")) {
+			sb.append("名称不允许为空；");
+		}
+		if(this.getCode() == null || this.getCode().equals("")) {
+			sb.append("编码不允许为空；");
+		}
+		if(this.getShowName() == null || this.getShowName().equals("")) {
+			sb.append("显示名称不允许为空；");
+		}
+		if(this.getPinyinName() == null || this.getPinyinName().equals("")) {
+			sb.append("拼音名称不允许为空；");
+		}
+		if(this.getMisType() == null || this.getMisType().equals("")) {
+			sb.append("系统类型不允许为空；");
+		}
+		else {
+			if(!this.getMisType().equals("Z5") && !this.getMisType().equals("Z9")) {
+				sb.append("系统类型不合法【仅允许Z5或Z9】；");
+			}
+		}
+		if(this.getTongdCode() == null || this.getTongdCode().equals("")) {
+			sb.append("通道识别码（tongdCode）不允许为空");
+		}
+		return sb.toString();
+	}
 	
 	//客户编码
 	private String code;

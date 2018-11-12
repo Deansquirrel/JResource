@@ -67,5 +67,9 @@ public abstract class BaseRelationShipRepository<T extends BaseRelationShip> {
 		logger.info("DelRelatonShip - " + mGson.toJson(relatonShip));
 		return  jdbcTemplate.update(getDelSql(), getDelParams(relatonShip));
 	}
+	
+	protected JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
 
 }

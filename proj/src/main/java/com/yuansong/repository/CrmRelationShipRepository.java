@@ -1,7 +1,11 @@
 package com.yuansong.repository;
 
+import java.util.List;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yuansong.relationship.CrmRelationShip;
 import com.yuansong.repository.RowMapper.CrmRelationShipRowMapper;
@@ -146,6 +150,52 @@ public class CrmRelationShipRepository extends BaseRelationShipRepository<CrmRel
 	private static final String DEL_SQL = ""
 			+ "DELETE FROM [CrmRelationShip]" + 
 			"  WHERE [FId] = ?";
+	
+	private static final String GET_SQL_BYCUSTOMERID = ""
+			+ "SELECT [FId]" + 
+			"      ,[FName]" + 
+			"      ,[FDescription]" + 
+			"      ,[FCustomerId]" + 
+			"      ,[FBusinessNumber]" + 
+			"      ,[FAppid]" + 
+			"      ,[FCardId]" + 
+			"      ,[FRegisterLink]" + 
+			"      ,[FExceptionlessId]" + 
+			"      ,[FExceptionlessKey]" + 
+			"      ,[FTpProxyId]" + 
+			"      ,[FDomain]" + 
+			"      ,[FRabbitMQId]" + 
+			"      ,[FVirtualHosts]" + 
+			"      ,[FSnoServerName]" + 
+			"      ,[FsnoServerPort]" + 
+			"      ,[FCrmDzName]" + 
+			"      ,[FCrmDzPort]" + 
+			"      ,[FYwDetaildzDzName]" + 
+			"      ,[FYwDetaildzPort]" + 
+			"      ,[FCrmWsName]" + 
+			"      ,[FCrmWsPort]" + 
+			"      ,[FCrmWebName]" + 
+			"      ,[FCrmWebPort]" + 
+			"      ,[FCrmManagerName]" + 
+			"      ,[FCrmManagerPort]" + 
+			"      ,[FCrmFengkName]" + 
+			"      ,[FCrmFengkPort]" + 
+			"      ,[FCrmJichuShujName]" + 
+			"      ,[FCrmJichuShujPort]" + 
+			"      ,[FCrmGuanDName]" + 
+			"      ,[FCrmGuanDPort]" + 
+			"      ,[FCrmPeiZhName]" + 
+			"      ,[FCrmPeiZhPort]" + 
+			"      ,[FCrmAccRecordName]" + 
+			"      ,[FCrmAccRecordAddName]" + 
+			"      ,[FCrmMQClientName]" + 
+			"      ,[FCrmFengkMQClientName]" + 
+			"      ,[FdataSyncName]" + 
+			"      ,[FWeixinCallBackName]" + 
+			"      ,[FRecordMonitorName]" + 
+			"      ,[FRecordMonitorPort]" + 
+			"  FROM [CrmRelationShip]" + 
+			"  WHERE [FCustomerId] = ?";
 
 	@Override
 	protected String getGetSql() {
@@ -224,5 +274,21 @@ public class CrmRelationShipRepository extends BaseRelationShipRepository<CrmRel
 	protected RowMapper<CrmRelationShip> getRowMapper() {
 		return new CrmRelationShipRowMapper();
 	}
-
+	
+	@Transactional
+	public CrmRelationShip getDataByCustomerId(String customerId) {
+		JdbcTemplate jdbcTemplate = this.getJdbcTemplate();
+		List<CrmRelationShip> list = jdbcTemplate.query(GET_SQL_BYCUSTOMERID, new Object[] {customerId}, getRowMapper());
+		if(list.size() == 1 ) {
+			return list.get(0);
+		}
+		else {
+			if(list.size() == 0) {
+				return null;
+			}
+			else {
+				throw new RuntimeException("查询返回异常。【" + String.valueOf(list.size()) + "】");
+			}
+		}
+	}
 }

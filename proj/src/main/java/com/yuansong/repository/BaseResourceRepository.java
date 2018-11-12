@@ -67,5 +67,9 @@ public abstract class BaseResourceRepository<T extends BaseResource> {
 		logger.info("DelResource - " + mGson.toJson(resource));
 		return  jdbcTemplate.update(getDelSql(), getDelParams(resource));
 	}
+	
+	protected JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
 
 }

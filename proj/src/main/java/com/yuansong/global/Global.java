@@ -24,8 +24,8 @@ public class Global {
 	public static ModelAndView getResponseData(int errCode, String errMsg, Object rData){
 		
 		Map<String, Object> data = new HashMap<String, Object>();
-        data.put("code", errCode);
-        data.put("msg", errMsg);
+        data.put("errcode", errCode);
+        data.put("errmsg", errMsg);
         if(rData != null) {
         	data.put("data", rData);        	
         }

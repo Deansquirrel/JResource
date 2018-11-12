@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-
 import com.yuansong.resource.RdsDbResource;
 
 public class RdsDbResourceRowMapper implements RowMapper<RdsDbResource> {
@@ -19,6 +18,7 @@ public class RdsDbResourceRowMapper implements RowMapper<RdsDbResource> {
 		resource.setDbUser(rs.getString("FDbUser"));
 		resource.setDbPwd(rs.getString("FDbPwd"));
 		resource.setRdsId(rs.getString("FRdsId"));
+		resource.setRdsResource(null);
 		return resource;
 	}
 
