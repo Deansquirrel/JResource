@@ -36,6 +36,9 @@ public class CustomerResource extends BaseResource {
 		if(this.getShowName() == null || this.getShowName().equals("")) {
 			sb.append("显示名称不允许为空；");
 		}
+		if(this.getSimpleName() == null || this.getSimpleName().equals("")) {
+			sb.append("简称不允许为空；");
+		}
 		if(this.getPinyinName() == null || this.getPinyinName().equals("")) {
 			sb.append("拼音名称不允许为空；");
 		}

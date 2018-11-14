@@ -28,6 +28,14 @@ public class ResourceService {
 		return customerResourceRepository.addResource(resource);
 	}
 	
+	public int resourceDel(CustomerResource resource) {
+		return customerResourceRepository.delResource(resource);
+	}
+	
+	public CustomerResource getCustomer(String id) {
+		return customerResourceRepository.getResource(id);
+	}
+	
 	public CustomerResource getCustomerByCode(String code) {
 		return customerResourceRepository.getDataByCode(code);
 	}
