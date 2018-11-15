@@ -4,22 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yuansong.global.Global;
-import com.yuansong.service.TestService;
 
 @Controller
 @RequestMapping(value="/")
 public class RootController {
 
 	private final Logger logger = Logger.getLogger(RootController.class);
-	
-	@Autowired
-	private TestService testService;
 	
 //	@RequestMapping(value="/")
 //	public ModelAndView defaultPage(Map<String, Object> model){
@@ -47,7 +42,7 @@ public class RootController {
 	public ModelAndView test(Map<String, Object> model){
 		logger.debug("RootController test");
 		
-		return Global.getResponseData(0, "", testService.test());
+		return Global.getResponseData(0, "");
 		
 //		Map<String, Object> data = new HashMap<String, Object>();
 //        data.put("errcode", 0);

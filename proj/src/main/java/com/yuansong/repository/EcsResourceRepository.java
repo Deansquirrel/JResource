@@ -19,7 +19,8 @@ public class EcsResourceRepository extends BaseResourceRepository<EcsResource> {
 			"      ,[FInternetIp]" + 
 			"      ,[FIntranetIp]" + 
 			"      ,[FOs]" + 
-			"      ,[FExpirationDate]" + 
+			"      ,[FExpirationDate]" +
+			"      ,[FRdpPort]" +
 			"      ,[FLoginName]" + 
 			"      ,[FLoginPwd]" + 
 			"  FROM [EcsResource]" + 
@@ -34,6 +35,7 @@ public class EcsResourceRepository extends BaseResourceRepository<EcsResource> {
 			"      ,[FIntranetIp]" + 
 			"      ,[FOs]" + 
 			"      ,[FExpirationDate]" + 
+			"      ,[FRdpPort]" +
 			"      ,[FLoginName]" + 
 			"      ,[FLoginPwd]" + 
 			"  FROM [EcsResource]";
@@ -48,9 +50,10 @@ public class EcsResourceRepository extends BaseResourceRepository<EcsResource> {
 			"           ,[FIntranetIp]" + 
 			"           ,[FOs]" + 
 			"           ,[FExpirationDate]" + 
+			"      ,[FRdpPort]" +
 			"           ,[FLoginName]" + 
 			"           ,[FLoginPwd])" + 
-			"     VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+			"     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String DEL_SQL = ""
 			+ "DELETE FROM [EcsResource]" + 
 			"	WHERE [FId] = ?";
@@ -82,6 +85,7 @@ public class EcsResourceRepository extends BaseResourceRepository<EcsResource> {
 				resource.getIntranetIp(),
 				resource.getOs(),
 				DateTool.getDateStr(resource.getExpirationDate(), "yyyy-MM-dd"),
+				resource.getRdpPort(),
 				resource.getLoginName(),
 				resource.getLoginPwd()
 		};

@@ -1,7 +1,7 @@
 package com.yuansong.resource;
 
 import com.yuansong.common.CommonFun;
-import com.yuansong.form.CustomerAddForm;
+import com.yuansong.form.CustomerAdd;
 
 public class CustomerResource extends BaseResource {
 	
@@ -9,7 +9,7 @@ public class CustomerResource extends BaseResource {
 		super();
 	}
 	
-	public CustomerResource(CustomerAddForm form) {
+	public CustomerResource(CustomerAdd form) {
 		super();
 		this.setId(CommonFun.UUID());
 		this.setName(form.getName());

@@ -22,6 +22,7 @@ public class EcsResourceRowMapper implements RowMapper<EcsResource> {
 		resource.setIntranetIp(rs.getString("FIntranetIp"));
 		resource.setOs(rs.getString("FOs"));
 		resource.setExpirationDate(ConversionTool.convertSqlDateToUtilDate(rs.getDate("FExpirationDate")));
+		resource.setRdpPort(rs.getInt("FRdpPort"));
 		resource.setLoginName(rs.getString("FLoginName"));
 		resource.setLoginPwd(rs.getString("FLoginPwd"));
 		return resource;

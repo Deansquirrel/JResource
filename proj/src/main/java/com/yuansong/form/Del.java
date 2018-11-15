@@ -1,6 +1,6 @@
 package com.yuansong.form;
 
-public class DelForm {
+public class Del {
 	
 	private String id;
 
