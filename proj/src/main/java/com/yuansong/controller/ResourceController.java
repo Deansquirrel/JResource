@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.yuansong.form.CommonDbAdd;
 import com.yuansong.form.CustomerAdd;
 import com.yuansong.form.Del;
 import com.yuansong.form.EcsAdd;
+import com.yuansong.form.ExceptionLessAdd;
 import com.yuansong.global.Global;
 import com.yuansong.resource.BaseResource;
+import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
+import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -44,6 +48,8 @@ public class ResourceController {
 		try {
 			rData.put("Customer", resourceService.getCustomerList());
 			rData.put("ECS", resourceService.getEcsList());
+			rData.put("CommonDb", resourceService.getCommonDbList());
+			rData.put("ExceptionLess", resourceService.getExceptionLessList());
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			logger.error(ex.getMessage());
@@ -186,6 +192,133 @@ public class ResourceController {
 		}
 	}
 	//----------------------------------------------------------------------------------------------------------------
+	//CommonDb
+	@RequestMapping(value="/CommonDb/Add",method=RequestMethod.POST)
+	public ModelAndView addCommonDb(@RequestBody String data, Map<String, Object> model) {
+		CommonDbAdd form = null;
+		CommonDbResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, CommonDbAdd.class);
+			resource = new CommonDbResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/CommonDb/Del",method=RequestMethod.POST)
+	public ModelAndView delCommonDb(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			CommonDbResource resource = new CommonDbResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/CommonDb/{id}",method=RequestMethod.GET)
+	public ModelAndView getCommonDbResource(@PathVariable String id, Map<String, Object> model){
+		logger.debug("ResourceController getCommonDbResource");
+		CommonDbResource resource = null;
+		try {
+			resource = resourceService.getCommonDb(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取数据库信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	//----------------------------------------------------------------------------------------------------------------
+	//ExceptioinLess
+	@RequestMapping(value="/ExceptionLess/Add",method=RequestMethod.POST)
+	public ModelAndView addExceptionLess(@RequestBody String data, Map<String, Object> model) {
+		ExceptionLessAdd form = null;
+		ExceptionlessResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, ExceptionLessAdd.class);
+			resource = new ExceptionlessResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/ExceptionLess/Del",method=RequestMethod.POST)
+	public ModelAndView delExceptionLess(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			ExceptionlessResource resource = new ExceptionlessResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/ExceptionLess/{id}",method=RequestMethod.GET)
+	public ModelAndView getExceptionLessResource(@PathVariable String id, Map<String, Object> model){
+		logger.debug("ResourceController getCommonDbResource");
+		ExceptionlessResource resource = null;
+		try {
+			resource = resourceService.getExceptionLess(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取ExceptionLess信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	
+	//----------------------------------------------------------------------------------------------------------------
 	
 	@RequestMapping(value="/Rds/{id}",method=RequestMethod.GET)
 	public ModelAndView getRdsResource(@PathVariable String id, Map<String, Object> model){
@@ -196,12 +329,12 @@ public class ResourceController {
 		return Global.getResponseData(0, "", resourceService.getRds(id));
 	}
 	
-	@RequestMapping(value="/DB/{id}",method=RequestMethod.GET)
-	public ModelAndView getCommonDbResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getCommonDbResource");
-		if(id == null || id.equals("")) {
-			return Global.getResponseData(-1, "ID不能为空");
-		}
-		return Global.getResponseData(0, "", resourceService.getDb(id));
-	}	
+//	@RequestMapping(value="/DB/{id}",method=RequestMethod.GET)
+//	public ModelAndView getCommonDbResource(@PathVariable String id, Map<String, Object> model){
+//		logger.debug("ResourceController getCommonDbResource");
+//		if(id == null || id.equals("")) {
+//			return Global.getResponseData(-1, "ID不能为空");
+//		}
+//		return Global.getResponseData(0, "", resourceService.getDb(id));
+//	}	
 }

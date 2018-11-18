@@ -51,7 +51,7 @@ public class EcsResource extends BaseResource {
 			sb.append("公网IP不允许为空；");
 		}
 		if(this.getIntranetIp() == null || this.getIntranetIp().equals("")){
-			sb.append("私有不允许为空；");
+			sb.append("私有IP不允许为空；");
 		}
 		if(this.getOs()==null || this.getOs().equals("")) {
 			sb.append("操作系统不允许为空；");
