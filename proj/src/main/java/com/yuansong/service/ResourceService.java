@@ -9,11 +9,13 @@ import com.yuansong.repository.CommonDbResourceRepository;
 import com.yuansong.repository.CustomerResourceRepository;
 import com.yuansong.repository.EcsResourceRepository;
 import com.yuansong.repository.ExceptionlessResourceRepository;
+import com.yuansong.repository.MongoDBResourceRepository;
 import com.yuansong.repository.RdsDbResourceRepository;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
+import com.yuansong.resource.MongoDBResource;
 import com.yuansong.resource.RdsDbResource;
 
 @Service
@@ -33,6 +35,9 @@ public class ResourceService {
 	
 	@Autowired
 	private ExceptionlessResourceRepository exceptionlessResourceRepository; 
+	
+	@Autowired
+	private MongoDBResourceRepository mongoDBResourceRepository;
 	
 	//------------------------------------------------------------------------------------------
 	
@@ -112,6 +117,23 @@ public class ResourceService {
 	
 	//------------------------------------------------------------------------------------------
 	
+	public int resourceAdd(MongoDBResource resource) {
+		return mongoDBResourceRepository.addResource(resource);
+	}
+	
+	public int resourceDel(MongoDBResource resource) {
+		return mongoDBResourceRepository.delResource(resource);
+	} 
+	
+	public MongoDBResource getMongoDB(String id) {
+		return mongoDBResourceRepository.getResource(id);
+	}
+	
+	public List<MongoDBResource> 	getMongoDBList(){
+		return mongoDBResourceRepository.getResourceList();
+	}
+	
+	//------------------------------------------------------------------------------------------
 	
 	public RdsDbResource getRds(String id) {
 		return rdsDbResourceRepository.getResource(id);

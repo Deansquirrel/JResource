@@ -19,12 +19,14 @@ import com.yuansong.form.CustomerAdd;
 import com.yuansong.form.Del;
 import com.yuansong.form.EcsAdd;
 import com.yuansong.form.ExceptionLessAdd;
+import com.yuansong.form.MongoDBAdd;
 import com.yuansong.global.Global;
 import com.yuansong.resource.BaseResource;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
+import com.yuansong.resource.MongoDBResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -50,6 +52,7 @@ public class ResourceController {
 			rData.put("ECS", resourceService.getEcsList());
 			rData.put("CommonDb", resourceService.getCommonDbList());
 			rData.put("ExceptionLess", resourceService.getExceptionLessList());
+			rData.put("MongoDB", resourceService.getMongoDBList());
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			logger.error(ex.getMessage());
@@ -318,6 +321,69 @@ public class ResourceController {
 		}
 	}
 	
+	//----------------------------------------------------------------------------------------------------------------
+	//MongoDB
+	@RequestMapping(value="/MongoDB/Add",method=RequestMethod.POST)
+	public ModelAndView addMongoDB(@RequestBody String data, Map<String, Object> model) {
+		MongoDBAdd form = null;
+		MongoDBResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, MongoDBAdd.class);
+			resource = new MongoDBResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/MongoDB/Del",method=RequestMethod.POST)
+	public ModelAndView delMongoDB(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			MongoDBResource resource = new MongoDBResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/MongoDB/{id}",method=RequestMethod.GET)
+	public ModelAndView getMongoDBResource(@PathVariable String id, Map<String, Object> model){
+		logger.debug("ResourceController getCommonDbResource");
+		MongoDBResource resource = null;
+		try {
+			resource = resourceService.getMongoDB(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取MongoDB信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
 	//----------------------------------------------------------------------------------------------------------------
 	
 	@RequestMapping(value="/Rds/{id}",method=RequestMethod.GET)

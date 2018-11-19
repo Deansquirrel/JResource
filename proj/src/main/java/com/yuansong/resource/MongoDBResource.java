@@ -1,5 +1,8 @@
 package com.yuansong.resource;
 
+import com.yuansong.common.CommonFun;
+import com.yuansong.form.MongoDBAdd;
+
 public class MongoDBResource extends BaseResource {
 	
 	//公网IP
@@ -10,6 +13,40 @@ public class MongoDBResource extends BaseResource {
 	private int port;
 	private String loginName;
 	private String loginPwd;
+	
+	public MongoDBResource() {
+		super();
+	}
+	
+	public MongoDBResource(MongoDBAdd form) {
+		super();
+		this.setId(CommonFun.UUID());
+		this.setName(form.getName());
+		this.setDescription(form.getDescription());
+		this.setInternetIp(form.getInternetIp());
+		this.setIntranetIp(form.getIntranetIp());
+		this.setPort(form.getPort());
+		this.setLoginName(form.getLoginName());
+		this.setLoginPwd(form.getLoginPwd());
+	}
+	
+	public String check() {
+		StringBuilder sb = new StringBuilder();
+		if(this.getId() == null || this.getId().equals("")) {
+			sb.append("ID不允许为空；");
+		}
+		if(this.getName() == null || this.getName().equals("")) {
+			sb.append("名称不允许为空；");
+		}
+		if(this.getInternetIp() == null || this.getInternetIp().equals("")) {
+			sb.append("外网地址不允许为空；");
+		}
+		if(this.getLoginName() == null || this.getLoginName().equals("")) {
+			sb.append("登录名不允许为空；");
+		}
+		return sb.toString();
+	}
+	
 	public String getInternetIp() {
 		return internetIp;
 	}
