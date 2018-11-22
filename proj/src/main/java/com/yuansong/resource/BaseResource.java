@@ -1,5 +1,8 @@
 package com.yuansong.resource;
 
+import com.yuansong.common.CommonFun;
+import com.yuansong.form.BaseAddForm;
+
 public abstract class BaseResource {
 	
 	//资源ID
@@ -8,6 +11,27 @@ public abstract class BaseResource {
 	private String name;
 	//描述
 	private String description;
+	
+	public BaseResource() {
+		
+	}
+	
+	public BaseResource(BaseAddForm form) {
+		this.setId(CommonFun.UUID());
+		this.setName(form.getName());
+		this.setDescription(form.getDescription());
+	}
+	
+	public String check() {
+		StringBuilder sb = new StringBuilder();
+		if(this.id == null || this.id.equals("")) {
+			sb.append("ID不允许为空；");
+		}
+		if(this.name == null || this.name.equals("")) {
+			sb.append("名称不允许为空；");
+		}
+		return sb.toString();
+	}
 	
 	public String getId() {
 		return id;

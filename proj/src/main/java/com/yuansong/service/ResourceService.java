@@ -10,13 +10,19 @@ import com.yuansong.repository.CustomerResourceRepository;
 import com.yuansong.repository.EcsResourceRepository;
 import com.yuansong.repository.ExceptionlessResourceRepository;
 import com.yuansong.repository.MongoDBResourceRepository;
+import com.yuansong.repository.RabbitMQResourceRepository;
 import com.yuansong.repository.RdsDbResourceRepository;
+import com.yuansong.repository.RdsResourceRepository;
+import com.yuansong.repository.RedisResourceRepository;
 import com.yuansong.resource.CommonDbResource;
 import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.resource.MongoDBResource;
+import com.yuansong.resource.RabbitMQResource;
 import com.yuansong.resource.RdsDbResource;
+import com.yuansong.resource.RdsResource;
+import com.yuansong.resource.RedisResource;
 
 @Service
 public class ResourceService {
@@ -28,16 +34,25 @@ public class ResourceService {
 	private EcsResourceRepository ecsResourceRepository;
 	
 	@Autowired
+	private RdsResourceRepository rdsResourceRepository;
+	
+	@Autowired
 	private RdsDbResourceRepository rdsDbResourceRepository;
 	
 	@Autowired
 	private CommonDbResourceRepository commonDbResourceRepository;
 	
 	@Autowired
+	private RedisResourceRepository redisResourceRepository;
+	
+	@Autowired
 	private ExceptionlessResourceRepository exceptionlessResourceRepository; 
 	
 	@Autowired
 	private MongoDBResourceRepository mongoDBResourceRepository;
+	
+	@Autowired
+	private RabbitMQResourceRepository rabbitMQResourceRepository;
 	
 	//------------------------------------------------------------------------------------------
 	
@@ -62,7 +77,7 @@ public class ResourceService {
 	}
 	
 	//------------------------------------------------------------------------------------------
-	
+
 	public int resourceAdd(EcsResource resource) {
 		return ecsResourceRepository.addResource(resource);
 	}
@@ -81,6 +96,25 @@ public class ResourceService {
 	
 	//------------------------------------------------------------------------------------------
 	
+
+	public int resourceAdd(RdsResource resource) {
+		return rdsResourceRepository.addResource(resource);
+	}
+	
+	public int resourceDel(RdsResource resource) {
+		return rdsResourceRepository.delResource(resource);
+	}
+	
+	public RdsResource getRds(String id) {
+		return rdsResourceRepository.getResource(id);
+	}
+	
+	public List<RdsResource> 	getRdsList(){
+		return rdsResourceRepository.getResourceList();
+	}
+	
+	//------------------------------------------------------------------------------------------
+	
 	public int resourceAdd(CommonDbResource resource) {
 		return commonDbResourceRepository.addResource(resource);
 	}
@@ -95,6 +129,42 @@ public class ResourceService {
 	
 	public List<CommonDbResource> 	getCommonDbList(){
 		return commonDbResourceRepository.getResourceList();
+	}
+	
+	//------------------------------------------------------------------------------------------
+	
+	public int resourceAdd(RdsDbResource resource) {
+		return rdsDbResourceRepository.addResource(resource);
+	}
+	
+	public int resourceDel(RdsDbResource resource) {
+		return rdsDbResourceRepository.delResource(resource);
+	} 
+	
+	public RdsDbResource getRdsDb(String id) {
+		return rdsDbResourceRepository.getResource(id);
+	}
+	
+	public List<RdsDbResource> 	getRdsDbList(){
+		return rdsDbResourceRepository.getResourceList();
+	}
+	
+	//------------------------------------------------------------------------------------------
+	
+	public int resourceAdd(RedisResource resource) {
+		return redisResourceRepository.addResource(resource);
+	}
+	
+	public int resourceDel(RedisResource resource) {
+		return redisResourceRepository.delResource(resource);
+	} 
+	
+	public RedisResource getRedis(String id) {
+		return redisResourceRepository.getResource(id);
+	}
+	
+	public List<RedisResource> getRedisList(){
+		return redisResourceRepository.getResourceList();
 	}
 	
 	//------------------------------------------------------------------------------------------
@@ -134,10 +204,28 @@ public class ResourceService {
 	}
 	
 	//------------------------------------------------------------------------------------------
-	
-	public RdsDbResource getRds(String id) {
-		return rdsDbResourceRepository.getResource(id);
+
+	public int resourceAdd(RabbitMQResource resource) {
+		return rabbitMQResourceRepository.addResource(resource);
 	}
+	
+	public int resourceDel(RabbitMQResource resource) {
+		return rabbitMQResourceRepository.delResource(resource);
+	} 
+	
+	public RabbitMQResource getRabbitMQ(String id) {
+		return rabbitMQResourceRepository.getResource(id);
+	}
+	
+	public List<RabbitMQResource> getRabbitMQList(){
+		return rabbitMQResourceRepository.getResourceList();
+	}
+	
+	//------------------------------------------------------------------------------------------
+	
+//	public RdsDbResource getRds(String id) {
+//		return rdsDbResourceRepository.getResource(id);
+//	}
 	
 	
 	

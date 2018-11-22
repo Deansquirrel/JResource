@@ -1,26 +1,11 @@
-package com.yuansong.resource;
+package com.yuansong.form;
 
-import com.yuansong.form.BaseAddForm;
-
-public abstract class DbResource extends BaseResource {
+public class RdsDbAdd extends BaseAddForm {
 	
 	private String dbName;
 	private String dbUser;
 	private String dbPwd;
-	
-	public DbResource() {
-		super();
-	}
-	
-	public DbResource(BaseAddForm form) {
-		super(form);
-	}
-	
-	@Override
-	public String check() {
-		return super.check();
-	}
-
+	private String rdsId;
 	public String getDbName() {
 		return dbName;
 	}
@@ -39,4 +24,11 @@ public abstract class DbResource extends BaseResource {
 	public void setDbPwd(String dbPwd) {
 		this.dbPwd = dbPwd;
 	}
+	public String getRdsId() {
+		return rdsId;
+	}
+	public void setRdsId(String rdsId) {
+		this.rdsId = rdsId;
+	}
+
 }

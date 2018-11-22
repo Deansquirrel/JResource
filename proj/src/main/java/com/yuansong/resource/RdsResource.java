@@ -2,6 +2,8 @@ package com.yuansong.resource;
 
 import java.util.Date;
 
+import com.yuansong.form.RdsAdd;
+
 public class RdsResource extends BaseResource {
 	
 	//实例ID
@@ -20,6 +22,44 @@ public class RdsResource extends BaseResource {
 	private int intranetPort;
 	//过期日期
 	private Date expirationDate;
+	
+	public RdsResource() {
+		super();
+	}
+	
+	public RdsResource(RdsAdd form) {
+		super(form);
+		this.instanceID = form.getInstanceID();
+		this.area = form.getArea();
+		this.dbType = form.getDbType();
+		this.internetIp = form.getInternetIp();
+		this.internetPort = form.getInternetPort();
+		this.intranetIp = form.getIntranetIp();
+		this.intranetPort = form.getIntranetPort();
+		this.expirationDate = form.getExpirationDate();
+	}
+	
+	@Override
+	public String check() {
+		StringBuilder sb = new StringBuilder(super.check());
+		if(this.getInstanceID() == null || this.getInstanceID().equals("")) {
+			sb.append("实例ID不允许为空；");
+		}
+		if(this.getArea()==null || this.getArea().equals("")) {
+			sb.append("所在地域不允许为空；");
+		}
+		if(this.getDbType() == null || this.getDbType().equals("")) {
+			sb.append("系统类型不能为空");
+		}
+		if(this.getInternetIp() == null || this.getInternetIp().equals("")) {
+			sb.append("公网IP不允许为空；");
+		}
+		if(this.getIntranetIp() == null || this.getIntranetIp().equals("")){
+			sb.append("私有IP不允许为空；");
+		}
+		return sb.toString();
+	}
+	
 	public String getArea() {
 		return area;
 	}

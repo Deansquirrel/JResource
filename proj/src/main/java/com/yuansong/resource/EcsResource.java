@@ -33,14 +33,9 @@ public class EcsResource extends BaseResource {
 		this.setLoginPwd(form.getLoginPwd());
 	}
 	
+	@Override
 	public String check() {
-		StringBuilder sb = new StringBuilder();
-		if(this.getId() == null || this.getId().equals("")) {
-			sb.append("ID不允许为空；");
-		}
-		if(this.getName() == null || this.getName().equals("")) {
-			sb.append("名称不允许为空；");
-		}
+		StringBuilder sb = new StringBuilder(super.check());
 		if(this.getInstanceID() == null || this.getInstanceID().equals("")) {
 			sb.append("实例ID不允许为空；");
 		}

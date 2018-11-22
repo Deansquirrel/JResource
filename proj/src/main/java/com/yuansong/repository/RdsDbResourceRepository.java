@@ -1,6 +1,6 @@
 package com.yuansong.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,9 +44,9 @@ public class RdsDbResourceRepository extends BaseResourceRepository<RdsDbResourc
 			+ "DELETE FROM [RdsDbResource]" + 
 			"  WHERE [FId] = ?";
 	
-	
-	@Autowired
-	private RdsResourceRepository rdsResourceRepository;
+//	
+//	@Autowired
+//	private RdsResourceRepository rdsResourceRepository;
 
 	@Override
 	protected String getGetSql() {
@@ -72,7 +72,8 @@ public class RdsDbResourceRepository extends BaseResourceRepository<RdsDbResourc
 				resource.getDbName(),
 				resource.getDbUser(),
 				resource.getDbPwd(),
-				resource.getRdsResource()
+				resource.getRdsId()
+//				resource.getRdsResource().getId()
 		};
 	}
 
@@ -95,7 +96,7 @@ public class RdsDbResourceRepository extends BaseResourceRepository<RdsDbResourc
 	@Transactional
 	public RdsDbResource getResource(String id) {
 		RdsDbResource resource = super.getResource(id);
-		resource.setRdsResource(rdsResourceRepository.getResource(resource.getRdsId()));
+//		resource.setRdsResource(rdsResourceRepository.getResource(resource.getRdsId()));
 		return resource;
 	}
 	

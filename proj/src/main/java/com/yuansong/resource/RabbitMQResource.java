@@ -1,5 +1,7 @@
 package com.yuansong.resource;
 
+import com.yuansong.form.RabbitMQAdd;
+
 public class RabbitMQResource extends BaseResource {
 	
 	//公网IP
@@ -10,6 +12,32 @@ public class RabbitMQResource extends BaseResource {
 	private int port;
 	private String loginName;
 	private String loginPwd;
+	
+	
+	public RabbitMQResource() {
+		super();
+	}
+	
+	public RabbitMQResource(RabbitMQAdd form) {
+		super(form);
+		this.setInternetIp(form.getInternetIp());
+		this.setIntranetIp(form.getIntranetIp());
+		this.setPort(form.getPort());
+		this.setLoginName(form.getLoginName());
+		this.setLoginPwd(form.getLoginPwd());
+	}
+	
+	@Override
+	public String check() {
+		StringBuilder sb = new StringBuilder(super.check());
+		if(this.internetIp == null || this.internetIp.equals("")) {
+			sb.append("公网IP不允许为空；");
+		}
+		if(this.loginName == null || this.loginName.equals("")) {
+			sb.append("登录名不允许为空；");
+		}
+		return sb.toString();
+	}
 
 	public int getPort() {
 		return port;

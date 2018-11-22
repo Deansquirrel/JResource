@@ -22,14 +22,9 @@ public class CustomerResource extends BaseResource {
 		this.setTongdCode(form.getTongdcode());
 	}
 	
+	@Override
 	public String check() {
-		StringBuilder sb = new StringBuilder();
-		if(this.getId() == null || this.getId().equals("")) {
-			sb.append("ID不允许为空；");
-		}
-		if(this.getName() == null || this.getName().equals("")) {
-			sb.append("名称不允许为空；");
-		}
+		StringBuilder sb = new StringBuilder(super.check());
 		if(this.getCode() == null || this.getCode().equals("")) {
 			sb.append("编码不允许为空；");
 		}

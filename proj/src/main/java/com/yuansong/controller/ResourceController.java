@@ -20,6 +20,10 @@ import com.yuansong.form.Del;
 import com.yuansong.form.EcsAdd;
 import com.yuansong.form.ExceptionLessAdd;
 import com.yuansong.form.MongoDBAdd;
+import com.yuansong.form.RabbitMQAdd;
+import com.yuansong.form.RdsAdd;
+import com.yuansong.form.RdsDbAdd;
+import com.yuansong.form.RedisAdd;
 import com.yuansong.global.Global;
 import com.yuansong.resource.BaseResource;
 import com.yuansong.resource.CommonDbResource;
@@ -27,6 +31,10 @@ import com.yuansong.resource.CustomerResource;
 import com.yuansong.resource.EcsResource;
 import com.yuansong.resource.ExceptionlessResource;
 import com.yuansong.resource.MongoDBResource;
+import com.yuansong.resource.RabbitMQResource;
+import com.yuansong.resource.RdsDbResource;
+import com.yuansong.resource.RdsResource;
+import com.yuansong.resource.RedisResource;
 import com.yuansong.service.ResourceService;
 
 @Controller
@@ -50,14 +58,18 @@ public class ResourceController {
 		try {
 			rData.put("Customer", resourceService.getCustomerList());
 			rData.put("ECS", resourceService.getEcsList());
+			rData.put("RDS", resourceService.getRdsList());
 			rData.put("CommonDb", resourceService.getCommonDbList());
+			rData.put("RdsDb", resourceService.getRdsDbList());
 			rData.put("ExceptionLess", resourceService.getExceptionLessList());
 			rData.put("MongoDB", resourceService.getMongoDBList());
+			rData.put("RabbitMQ", resourceService.getRabbitMQList());
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			logger.error(ex.getMessage());
 			return Global.getResponseData(-1, ex.getMessage());
 		}
+//		logger.debug(mGson.toJson(rData));
 		return Global.getResponseData(0, "", rData);
 	}
 	
@@ -125,11 +137,23 @@ public class ResourceController {
 		}
 	}
 
-	@RequestMapping(value="/Customer/Get",method=RequestMethod.GET)
+	@RequestMapping(value="/Customer/List",method=RequestMethod.GET)
 	public ModelAndView getCustomerList(Map<String, Object> model){
 		logger.debug("ResourceController getCustomerList");
-
-		return Global.getResponseData(0, "", resourceService.getCustomerList());
+		List<CustomerResource> list = null;
+		try {
+			list = resourceService.getCustomerList();
+			if(list != null) {
+				return Global.getResponseData(0, "", list);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取客户列表失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
 	}
 	//----------------------------------------------------------------------------------------------------------------
 	//ECS
@@ -250,6 +274,130 @@ public class ResourceController {
 			}
 			else {
 				return Global.getResponseData(-1, "获取数据库信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	//----------------------------------------------------------------------------------------------------------------
+	//RdsDb
+	@RequestMapping(value="/RdsDb/Add",method=RequestMethod.POST)
+	public ModelAndView addRdsDb(@RequestBody String data, Map<String, Object> model) {
+		RdsDbAdd form = null;
+		RdsDbResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, RdsDbAdd.class);
+			resource = new RdsDbResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/RdsDb/Del",method=RequestMethod.POST)
+	public ModelAndView delRdsDb(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			RdsDbResource resource = new RdsDbResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/RdsDb/{id}",method=RequestMethod.GET)
+	public ModelAndView getRdsDbResource(@PathVariable String id, Map<String, Object> model){
+		RdsDbResource resource = null;
+		try {
+			resource = resourceService.getRdsDb(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取Rds数据库信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	//----------------------------------------------------------------------------------------------------------------
+	//Redis
+	@RequestMapping(value="/Redis/Add",method=RequestMethod.POST)
+	public ModelAndView addRedis(@RequestBody String data, Map<String, Object> model) {
+		RedisAdd form = null;
+		RedisResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, RedisAdd.class);
+			resource = new RedisResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/Redis/Del",method=RequestMethod.POST)
+	public ModelAndView delRedis(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			RedisResource resource = new RedisResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/Redis/{id}",method=RequestMethod.GET)
+	public ModelAndView getRedisResource(@PathVariable String id, Map<String, Object> model){
+		RedisResource resource = null;
+		try {
+			resource = resourceService.getRedis(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取Redis信息失败【NULL】");
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -385,15 +533,158 @@ public class ResourceController {
 		}
 	}
 	//----------------------------------------------------------------------------------------------------------------
+	//RabbitMQ
+	@RequestMapping(value="/RabbitMQ/Add",method=RequestMethod.POST)
+	public ModelAndView addRabbitMQ(@RequestBody String data, Map<String, Object> model) {
+		RabbitMQAdd form = null;
+		RabbitMQResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, RabbitMQAdd.class);
+			resource = new RabbitMQResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/RabbitMQ/Del",method=RequestMethod.POST)
+	public ModelAndView delRabbitMQ(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			RabbitMQResource resource = new RabbitMQResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/RabbitMQ/{id}",method=RequestMethod.GET)
+	public ModelAndView getRabbitMQResource(@PathVariable String id, Map<String, Object> model){
+		RabbitMQResource resource = null;
+		try {
+			resource = resourceService.getRabbitMQ(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取RabbitMQ信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	//----------------------------------------------------------------------------------------------------------------
+	//RDS
+	@RequestMapping(value="/Rds/Add",method=RequestMethod.POST)
+	public ModelAndView addRds(@RequestBody String data, Map<String, Object> model) {
+		RdsAdd form = null;
+		RdsResource resource = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, RdsAdd.class);
+			resource = new RdsResource(form);
+			String checkStr = resource.check();
+			if(checkStr.equals("")) {
+				rows = resourceService.resourceAdd(resource);				
+			}
+			else {
+				return Global.getResponseData(-1, checkStr);				
+			}
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
+	
+	@RequestMapping(value="/Rds/Del",method=RequestMethod.POST)
+	public ModelAndView delRds(@RequestBody String data, Map<String, Object> model) {
+		Del form = null;
+		int rows = -1;
+		try{
+			form = mGson.fromJson(data, Del.class);
+			RdsResource resource = new RdsResource();
+			resource.setId(form.getId());
+			rows = resourceService.resourceDel(resource);
+			
+		}catch(Exception ex) {
+			logger.debug(data);
+			logger.debug(ex.getMessage());
+			ex.printStackTrace();
+			return Global.getResponseData(-1, "", ex.getMessage());
+		}
+		return Global.getResponseData(0, "", rows);
+	}
 	
 	@RequestMapping(value="/Rds/{id}",method=RequestMethod.GET)
 	public ModelAndView getRdsResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getRdsResource");
-		if(id == null || id.equals("")) {
-			return Global.getResponseData(-1, "ID不能为空");
+		RdsResource resource = null;
+		try {
+			resource = resourceService.getRds(id);
+			if(resource != null) {
+				return Global.getResponseData(0, "", resource);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取Rds信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
 		}
-		return Global.getResponseData(0, "", resourceService.getRds(id));
 	}
+	
+	@RequestMapping(value="/Rds/List",method=RequestMethod.GET)
+	public ModelAndView getRdsList(Map<String, Object> model){
+		List<RdsResource> list = null;
+		try {
+			list = resourceService.getRdsList();
+			if(list != null) {
+				return Global.getResponseData(0, "", list);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取Rds列表失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	//----------------------------------------------------------------------------------------------------------------
+	
+	
+//	@RequestMapping(value="/Rds/{id}",method=RequestMethod.GET)
+//	public ModelAndView getRdsResource(@PathVariable String id, Map<String, Object> model){
+//		logger.debug("ResourceController getRdsResource");
+//		if(id == null || id.equals("")) {
+//			return Global.getResponseData(-1, "ID不能为空");
+//		}
+//		return Global.getResponseData(0, "", resourceService.getRds(id));
+//	}
 	
 //	@RequestMapping(value="/DB/{id}",method=RequestMethod.GET)
 //	public ModelAndView getCommonDbResource(@PathVariable String id, Map<String, Object> model){
