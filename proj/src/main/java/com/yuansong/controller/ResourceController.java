@@ -120,7 +120,6 @@ public class ResourceController {
 	
 	@RequestMapping(value="/Customer/{id}",method=RequestMethod.GET)
 	public ModelAndView getCustomerResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getCustomerResource");
 		CustomerResource resource = null;
 		try {
 			resource = resourceService.getCustomer(id);
@@ -139,7 +138,6 @@ public class ResourceController {
 
 	@RequestMapping(value="/Customer/List",method=RequestMethod.GET)
 	public ModelAndView getCustomerList(Map<String, Object> model){
-		logger.debug("ResourceController getCustomerList");
 		List<CustomerResource> list = null;
 		try {
 			list = resourceService.getCustomerList();
@@ -202,7 +200,6 @@ public class ResourceController {
 	
 	@RequestMapping(value="/Ecs/{id}",method=RequestMethod.GET)
 	public ModelAndView getEcsResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getEcsResource");
 		EcsResource resource = null;
 		try {
 			resource = resourceService.getEcs(id);
@@ -265,7 +262,6 @@ public class ResourceController {
 	
 	@RequestMapping(value="/CommonDb/{id}",method=RequestMethod.GET)
 	public ModelAndView getCommonDbResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getCommonDbResource");
 		CommonDbResource resource = null;
 		try {
 			resource = resourceService.getCommonDb(id);
@@ -274,6 +270,24 @@ public class ResourceController {
 			}
 			else {
 				return Global.getResponseData(-1, "获取数据库信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/CommonDb/List",method=RequestMethod.GET)
+	public ModelAndView getCommonDbResourceList(Map<String, Object> model){
+		List<CommonDbResource> list = null;
+		try {
+			list = resourceService.getCommonDbList();
+			if(list != null) {
+				return Global.getResponseData(0, "", list);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取数据库列表失败【NULL】");
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -336,6 +350,24 @@ public class ResourceController {
 			}
 			else {
 				return Global.getResponseData(-1, "获取Rds数据库信息失败【NULL】");
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			logger.debug(ex.getMessage());
+			return Global.getResponseData(-1, ex.getMessage());
+		}
+	}
+	
+	@RequestMapping(value="/RdsDb/List",method=RequestMethod.GET)
+	public ModelAndView getRdsDbResourceList(Map<String, Object> model){
+		List<RdsDbResource> list = null;
+		try {
+			list = resourceService.getRdsDbList();
+			if(list != null) {
+				return Global.getResponseData(0, "", list);		
+			}
+			else {
+				return Global.getResponseData(-1, "获取Rds数据库列表失败【NULL】");
 			}
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -452,7 +484,6 @@ public class ResourceController {
 	
 	@RequestMapping(value="/ExceptionLess/{id}",method=RequestMethod.GET)
 	public ModelAndView getExceptionLessResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getCommonDbResource");
 		ExceptionlessResource resource = null;
 		try {
 			resource = resourceService.getExceptionLess(id);
@@ -516,7 +547,6 @@ public class ResourceController {
 	
 	@RequestMapping(value="/MongoDB/{id}",method=RequestMethod.GET)
 	public ModelAndView getMongoDBResource(@PathVariable String id, Map<String, Object> model){
-		logger.debug("ResourceController getCommonDbResource");
 		MongoDBResource resource = null;
 		try {
 			resource = resourceService.getMongoDB(id);
